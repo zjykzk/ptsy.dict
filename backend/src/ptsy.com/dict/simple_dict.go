@@ -2,7 +2,6 @@ package dict
 
 import (
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"log"
 	"os"
@@ -49,7 +48,7 @@ func (d *SimpleDict) Update(word *Word) (err error) {
 	d.Lock()
 	i, exist := d.findIndex(word.ID)
 	if !exist {
-		err = errors.New("no word")
+		err = ErrNoWord
 		goto END
 	}
 	d.words[i] = *word
@@ -80,7 +79,7 @@ func (d *SimpleDict) Delete(id int32) (err error) {
 	d.Lock()
 	i, exist := d.findIndex(id)
 	if !exist {
-		err = errors.New("no word")
+		err = ErrNoWord
 		goto END
 	}
 
