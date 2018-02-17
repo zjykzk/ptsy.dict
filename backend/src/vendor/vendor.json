@@ -1,0 +1,55 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "CSPbwbyzqA6sfORicn4HFtIhF/c=",
+			"path": "github.com/davecgh/go-spew/spew",
+			"revision": "87df7c60d5820d0f8ae11afede5aa52325c09717",
+			"revisionTime": "2018-01-29T09:57:49Z"
+		},
+		{
+			"checksumSHA1": "rylbYOEA1HI2BfUOOz0QRmCf5ks=",
+			"path": "github.com/julienschmidt/httprouter",
+			"revision": "e1b9828bc9e5904baec057a154c09ca40fe7fae0",
+			"revisionTime": "2017-10-27T13:37:09Z"
+		},
+		{
+			"checksumSHA1": "LuFv4/jlrmFNnDb/5SCSEPAM9vU=",
+			"path": "github.com/pmezard/go-difflib/difflib",
+			"revision": "792786c7400a136282c1664665ae0a8db921c6c2",
+			"revisionTime": "2016-01-10T10:55:54Z"
+		},
+		{
+			"checksumSHA1": "6thzskcj6XrMO5kW6GlRiuTDYjU=",
+			"path": "github.com/stretchr/objx",
+			"revision": "8a3f7159479fbc75b30357fbc48f380b7320f08e",
+			"revisionTime": "2018-01-29T17:20:03Z"
+		},
+		{
+			"checksumSHA1": "JIL0tHs3pEgHjXhtB3tJrz4C0h8=",
+			"path": "github.com/stretchr/testify",
+			"revision": "be8372ae8ec5c6daaed3cc28ebf73c54b737c240",
+			"revisionTime": "2018-02-02T15:35:43Z"
+		},
+		{
+			"checksumSHA1": "5QKvAdxb0E47Nzn7iI25AfgAvOI=",
+			"path": "github.com/stretchr/testify/assert",
+			"revision": "be8372ae8ec5c6daaed3cc28ebf73c54b737c240",
+			"revisionTime": "2018-02-02T15:35:43Z"
+		},
+		{
+			"checksumSHA1": "fg3TzS9/QK3wZbzei3Z6O8XPLHg=",
+			"path": "github.com/stretchr/testify/http",
+			"revision": "be8372ae8ec5c6daaed3cc28ebf73c54b737c240",
+			"revisionTime": "2018-02-02T15:35:43Z"
+		},
+		{
+			"checksumSHA1": "ktEYN4KC8f/rdhtfVslmtcKaX8E=",
+			"path": "github.com/stretchr/testify/mock",
+			"revision": "be8372ae8ec5c6daaed3cc28ebf73c54b737c240",
+			"revisionTime": "2018-02-02T15:35:43Z"
+		}
+	],
+	"rootPath": "/Users/zenk/study/mobx-react-boilerplate/backend/src"
+}
