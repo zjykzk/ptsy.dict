@@ -8,8 +8,8 @@ import {
 } from 'react-router-dom'
 const { Header, Content, Footer } = Layout
 
-import Search from './Search'
-import Admin from './Admin'
+import Search from './search/Search'
+import Admin from './admin/Admin'
 
 @observer
 class App extends React.Component {
@@ -23,8 +23,8 @@ class App extends React.Component {
           </Menu>
         </Header>
         <Content>
-          <Route exact path='/' render={() => <Search dict={this.props.dict}/>} />
-          <Route exact path='/admin' component={Admin} />
+          <Route exact path='/' render={() => <Search dict={this.props.dict} />} />
+          <Route exact path='/admin' render={() => <Admin dict={this.props.dict.words()} />} />
         </Content>
       </Layout>
       )
