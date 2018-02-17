@@ -103,6 +103,7 @@ func (s *Server) Start() error {
 
 // Shutdown shutdown the http server
 func (s *Server) Shutdown() {
+	s.logger.Println("[INFO] shutdown http server")
 	s.dict.Shutdown()
 }
 
@@ -154,7 +155,7 @@ func NewHTTPServer(conf *config.HTTP) (*Server, error) {
 	s := &Server{
 		HTTP:   *conf,
 		dict:   dict,
-		logger: log.New(os.Stderr, "[HTTP]", log.LstdFlags),
+		logger: log.New(os.Stderr, "[HTTP] ", log.LstdFlags),
 		Router: httprouter.New(),
 	}
 
