@@ -1,18 +1,22 @@
 import React, { Component } from 'react'
+import { observable } from 'mobx'
 import { observer } from 'mobx-react'
 import { Form, Row, Col, Input, Button, Icon } from 'antd';
 const FormItem = Form.Item;
 
+import WordDetail from './WordDetail'
+
 @observer
 class Search extends React.Component {
-  state = {
+  @observable state = {
     expand: false,
+    isAddWord: false,
   };
 
   handleSearch = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      console.log('Received values of form: ', values);
+      this.props.dict.searchAdmin(values)
     });
   }
 
@@ -22,7 +26,11 @@ class Search extends React.Component {
 
   toggle = () => {
     const { expand } = this.state;
-    this.setState({ expand: !expand });
+    this.state.expand = !expand
+  }
+
+  showAdd = () => {
+    this.state.isAddWord = true
   }
 
   // To generate mock Form.Item
@@ -66,6 +74,15 @@ class Search extends React.Component {
     ))
   }
 
+  cancel() {
+    this.state.isAddWord = false
+  }
+
+  add(w) {
+    this.props.dict.add(w)
+    this.state.isAddWord = false
+  }
+
   render() {
     return (
       <Form
@@ -73,14 +90,20 @@ class Search extends React.Component {
           'padding': '24px',
           'background': 'white',
           'border': '1px solid #d9d9d9',
-          'border-radius': '6px'
+          'borderRadius': '6px'
         }}
         onSubmit={this.handleSearch}
       >
         <Row gutter={40}>{this.getFields()}</Row>
         <Row>
           <Col span={12} style={{ textAlign: 'left' }}>
-            <Button type="primary" htmlType="submit">添加</Button>
+            <Button type="primary" onClick={this.showAdd}>添加</Button>
+            <WordDetail
+              model={this.state.isAddWord ? 'add' : ''}
+              dict={this.props.dict}
+              visible={this.state.isAddWord}
+              cancel={() => this.cancel()} 
+              save={(w) => this.add(w)}/>
           </Col>
           <Col span={12} style={{ textAlign: 'right' }}>
             <Button type="primary" htmlType="submit">搜索</Button>

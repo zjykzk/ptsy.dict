@@ -14,6 +14,7 @@ import Admin from './admin/Admin'
 @observer
 class App extends React.Component {
   render() {
+    let {dict} = this.props
     return (
       <Layout className="layout">
         <Header style={{ background: 'white' }}>
@@ -23,8 +24,8 @@ class App extends React.Component {
           </Menu>
         </Header>
         <Content>
-          <Route exact path='/' render={() => <Search dict={this.props.dict} />} />
-          <Route exact path='/admin' render={() => <Admin dict={this.props.dict.words()} />} />
+          <Route exact path='/' render={() => <Search dict={dict} />} />
+          <Route exact path='/admin' render={() => <Admin dict={dict} />} />
         </Content>
       </Layout>
       )

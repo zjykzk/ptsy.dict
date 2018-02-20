@@ -10,9 +10,9 @@ class Admin extends React.Component {
   render() {
     return (
     <div style={{ padding: '20px 240px', backgroud: 'white' }}>
-      <Search />
-      <div>
-        <WordList words={this.props.dict}/>
+      <Search dict={this.props.dict} />
+      <div style={{ background: 'white' }}>
+        <WordList dict={this.props.dict} />
       </div>
     </div>
     )
