@@ -1,4 +1,5 @@
 import Dict from './Dict'
+import * as srv from '../services/dict'
 
 export default class DictModel {
   search(v) {
