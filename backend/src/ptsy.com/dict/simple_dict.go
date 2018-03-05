@@ -97,13 +97,13 @@ func (d *SimpleDict) Find(w *Word, offset, limit int) ([]*Word, int, error) {
 
 	for i := range d.words {
 		wi := &d.words[i]
-		if (w.Ch != "" && strings.Contains(wi.Ch, w.Ch)) ||
-			(w.Comment != "" && strings.Contains(wi.Comment, w.Comment)) ||
-			(w.En != "" && strings.Contains(wi.En, w.En)) ||
-			(w.Examples != "" && strings.Contains(wi.Examples, w.Examples)) ||
-			(w.Origin != "" && strings.Contains(wi.Origin, w.Origin)) ||
-			(w.Position != "" && strings.Contains(wi.Position, w.Position)) ||
-			(w.Source != "" && strings.Contains(wi.Source, w.Source)) {
+		if strings.Contains(wi.Ch, w.Ch) &&
+			strings.Contains(wi.Comment, w.Comment) &&
+			strings.Contains(wi.En, w.En) &&
+			strings.Contains(wi.Examples, w.Examples) &&
+			strings.Contains(wi.Origin, w.Origin) &&
+			strings.Contains(wi.Position, w.Position) &&
+			strings.Contains(wi.Source, w.Source) {
 			if offset <= 0 {
 				ws = append(ws, wi)
 				if len(ws) >= limit {

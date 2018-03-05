@@ -86,11 +86,11 @@ func TestSimpleDict(t *testing.T) {
 
 	t.Run("find", func(t *testing.T) {
 		d.words = nil
-		d.Add(&Word{Ch: "a1"})
+		d.Add(&Word{Ch: "a1", Origin: "e"})
 		d.Add(&Word{En: "b1"})
 		d.Add(&Word{Examples: "c1"})
 		d.Add(&Word{Source: "d1"})
-		d.Add(&Word{Origin: "e1"})
+		d.Add(&Word{Ch: "e1", Origin: "e1"})
 		d.Add(&Word{Position: "f1"})
 		d.Add(&Word{Comment: "g1"})
 

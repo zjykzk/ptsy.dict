@@ -1,6 +1,6 @@
 import React from 'react'
 import { observer } from 'mobx-react'
-import { observable } from 'mobx'
+import { observable, action } from 'mobx'
 import { Table,Popconfirm } from 'antd'
 
 import WordDetail from './WordDetail'
@@ -51,8 +51,27 @@ class WordList extends React.Component {
         visible={this.visible}
         cancel={() => this.cancel()}
         save={(w) => this.update(w)}/>
-      <Table columns={this.columns} dataSource={this.props.dict.words()} rowKey={(r)=>r.id}/>
+      <Table columns={this.columns} dataSource={this.words} rowKey={(r)=>r.id} onChange={(p) => this.onChange(p)} pagination={{total:this.total}}/>
     </div>
+    )
+  }
+
+  @observable words = []
+  @observable page = 0
+  @observable pageSize = 10
+  @observable total = 0
+  onChange(p) {
+    this.page = p.current
+    this.pageSize = p.pageSize
+    this.fetchWords()
+  }
+
+  fetchWords() {
+    this.props.dict.words({offset:this.page,limit:this.pageSize}).then(
+      action("fetchSuccess", data => {
+        this.total = data.total
+        this.words = data.words
+      })
     )
   }
 
@@ -79,6 +98,11 @@ class WordList extends React.Component {
   update(w) {
     this.props.dict.update(w)
     this.visible = false
+  }
+
+  constructor(props) {
+    super(props)
+    this.fetchWords()
   }
 }
 

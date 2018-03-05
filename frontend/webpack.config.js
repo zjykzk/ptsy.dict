@@ -60,7 +60,7 @@ module.exports = {
     inline: true,
     progress: true,
     proxy: {
-      '/api/*': {
+      '/v1/*': {
         target: 'http://localhost:8877',
         changeOrigin: true,
         secure: false

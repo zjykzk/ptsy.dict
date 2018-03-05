@@ -36,7 +36,7 @@ export default class DictModel {
     console.log(w)
   }
 
-  words() {
-    return Dict
+  words(params) {
+    return srv.list(params)
   }
 }
