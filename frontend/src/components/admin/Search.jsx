@@ -16,7 +16,7 @@ class Search extends React.Component {
   handleSearch = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      this.props.dict.searchAdmin(values)
+      this.props.updateCond && this.props.updateCond(values)
     });
   }
 

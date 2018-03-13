@@ -93,7 +93,7 @@ END:
 
 // Find returns the words satify the conditions
 func (d *SimpleDict) Find(w *Word, offset, limit int) ([]*Word, int, error) {
-	ws := make([]*Word, 0, limit)
+	total, ws := 0, make([]*Word, 0, limit)
 
 	for i := range d.words {
 		wi := &d.words[i]
@@ -104,18 +104,16 @@ func (d *SimpleDict) Find(w *Word, offset, limit int) ([]*Word, int, error) {
 			strings.Contains(wi.Origin, w.Origin) &&
 			strings.Contains(wi.Position, w.Position) &&
 			strings.Contains(wi.Source, w.Source) {
-			if offset <= 0 {
+			total++
+			if offset <= 0 && len(ws) < limit {
 				ws = append(ws, wi)
-				if len(ws) >= limit {
-					break
-				}
 			} else {
 				offset--
 			}
 		}
 	}
 
-	return ws, len(d.words), nil
+	return ws, total, nil
 }
 
 // Start starts the dict

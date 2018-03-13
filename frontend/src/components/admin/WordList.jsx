@@ -4,6 +4,7 @@ import { observable, action } from 'mobx'
 import { Table,Popconfirm } from 'antd'
 
 import WordDetail from './WordDetail'
+import Search from './Search'
 
 @observer
 class WordList extends React.Component {
@@ -43,15 +44,23 @@ class WordList extends React.Component {
 
   render() {
     return (
-    <div>
-      <WordDetail
-        model={this.model}
-        dict={this.props.dict}
-        word={this.word}
-        visible={this.visible}
-        cancel={() => this.cancel()}
-        save={(w) => this.update(w)}/>
-      <Table columns={this.columns} dataSource={this.words} rowKey={(r)=>r.id} onChange={(p) => this.onChange(p)} pagination={{total:this.total}}/>
+    <div style={{ padding: '20px 240px', backgroud: 'white' }}>
+      <Search dict={this.props.dict} updateCond={c => this.updateCond(c)}/>
+      <div style={{ background: 'white' }}>
+        <WordDetail
+          model={this.model}
+          dict={this.props.dict}
+          word={this.word}
+          visible={this.visible}
+          cancel={() => this.cancel()}
+          save={(w) => this.update(w)}/>
+        <Table
+          columns={this.columns}
+          dataSource={this.words}
+          rowKey={(r)=>r.id}
+          onChange={(p) => this.onChange(p)}
+          pagination={{total:this.total}}/>
+      </div>
     </div>
     )
   }
@@ -60,14 +69,24 @@ class WordList extends React.Component {
   @observable page = 0
   @observable pageSize = 10
   @observable total = 0
+  @observable cond = {}
   onChange(p) {
     this.page = p.current
     this.pageSize = p.pageSize
+    this.cond.offset = (this.page-1) * this.pageSize
+    this.cond.limit = this.pageSize
+    this.fetchWords()
+  }
+
+  updateCond(cond) {
+    this.cond = cond
+    this.cond.offset = 0
+    this.cond.limit = this.pageSize
     this.fetchWords()
   }
 
   fetchWords() {
-    this.props.dict.words({offset:this.page,limit:this.pageSize}).then(
+    this.props.dict.words(this.cond).then(
       action("fetchSuccess", data => {
         this.total = data.total
         this.words = data.words
