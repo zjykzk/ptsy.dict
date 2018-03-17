@@ -11,7 +11,7 @@ class Search extends React.Component {
   return (
     <div style={{ background: 'white' }}>
       <div style={{ padding: '20px 240px', backgroud: 'white' }}>
-        <Input.Search onSearch={this.handleSearch} />
+        <Input.Search onSearch={v => this.handleSearch(v)} />
       </div>
       <div style={{padding: '0 240px'}}>
         <WordList words={this.words} keyword={this.keyword}/>
@@ -20,13 +20,17 @@ class Search extends React.Component {
     )
   }
 
-  @action
   handleSearch = v => {
-    this.words = this.props.dict.search(v)
+    this.props.dict.search(v).then(
+      action("searchSuccess", data => {
+        console.log(data)
+        this.words = data.words
+      })
+    )
     this.keyword = v
   };
 
-  @observable words
+  @observable words = []
   @observable keyword
 }
 

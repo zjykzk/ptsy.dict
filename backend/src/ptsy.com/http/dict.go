@@ -114,6 +114,21 @@ func (s *Server) findWord(_ httprouter.Params, o interface{}) (int, interface{})
 	return http.StatusOK, map[string]interface{}{"total": total, "words": ws}
 }
 
+type searchRequest struct {
+	Keyword string `json:"s"`
+}
+
+func (s *Server) search(_ httprouter.Params, o interface{}) (int, interface{}) {
+	key := o.(*searchRequest)
+	ws, err := s.dict.Search(key.Keyword)
+
+	if err != nil {
+		return http.StatusInternalServerError, httpError{Code: errCodeInternal, Message: err.Error()}
+	}
+
+	return http.StatusOK, map[string]interface{}{"words": ws}
+}
+
 const (
 	dictPrefix = "/dict"
 )
@@ -124,4 +139,10 @@ func registerDictRouter(s *Server) {
 	r(http.MethodPut, root, newParser(func() interface{} { return &dict.Word{} }), s.updateWord)
 	r(http.MethodDelete, s.path(dictPrefix, ":id"), emptyParser, s.deleteWord)
 	r(http.MethodGet, root, newParseFromQuery(func() interface{} { return &findRequest{} }), s.findWord)
+	r(
+		http.MethodGet,
+		s.path(dictPrefix, "search"),
+		newParseFromQuery(func() interface{} { return &searchRequest{} }),
+		s.search,
+	)
 }

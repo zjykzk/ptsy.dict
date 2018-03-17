@@ -18,19 +18,19 @@ class WordList extends React.Component {
           //<Word word={word} key={word.id} /> 
   <Panel header={word.ch} key={i}>
     <h2>中文</h2>
-    <p>{rep(word.ch, this.props.keyword)}</p>
+    <p>{word.ch && rep(word.ch, this.props.keyword)}</p>
     <h2>英文</h2>
-    <p>{rep(word.en, this.props.keyword)}</p>
+    <p>{word.en && rep(word.en, this.props.keyword)}</p>
     <h2>例句</h2>
-    <p>{rep(word.examples, this.props.keyword)}</p>
+    <p>{word.examples && rep(word.examples, this.props.keyword)}</p>
     <h2>出处</h2>
-    <p>{rep(word.source, this.props.keyword)}</p>
+    <p>{word.source && rep(word.source, this.props.keyword)}</p>
     <h2>来源</h2>
-    <p>{rep(word.origin, this.props.keyword)}</p>
+    <p>{word.origin && rep(word.origin, this.props.keyword)}</p>
     <h2>页码/日期/题目</h2>
-    <p>{rep(word.position, this.props.keyword)}</p>
+    <p>{word.position && rep(word.position, this.props.keyword)}</p>
     <h2>备注</h2>
-    <p>{rep(word.comment, this.props.keyword)}</p>
+    <p>{word.position && rep(word.comment, this.props.keyword)}</p>
   </Panel>
         )) }
       </Collapse>
