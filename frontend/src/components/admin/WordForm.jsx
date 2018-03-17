@@ -17,7 +17,7 @@ const WordForm = Form.create()((props) => {
     <Form onSubmit={handleSubmit}>
       <FormItem style={{display: 'none'}} label='id'>
         {getFieldDecorator('id', {
-          initialValue: word ? word.id : ''
+          initialValue: word ? word.id : 0
         })(<Input />)}
       </FormItem>
       <FormItem label='中文'>
