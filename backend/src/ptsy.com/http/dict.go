@@ -38,7 +38,7 @@ func (s *Server) addWord(_ httprouter.Params, obj interface{}) (int, interface{}
 		return http.StatusInternalServerError, &httpError{Code: errCodeInternal, Message: err.Error()}
 	}
 
-	return http.StatusOK, nil
+	return http.StatusOK, suc
 }
 
 func (s *Server) deleteWord(p httprouter.Params, _ interface{}) (int, interface{}) {
@@ -56,7 +56,7 @@ func (s *Server) deleteWord(p httprouter.Params, _ interface{}) (int, interface{
 
 	err = s.dict.Delete(int32(idi))
 	if err == nil {
-		return http.StatusOK, nil
+		return http.StatusOK, suc
 	}
 
 	s.logger.Printf("[ERROR] delete word:%s error:%s\n", id, err)
@@ -72,7 +72,7 @@ func (s *Server) updateWord(_ httprouter.Params, o interface{}) (int, interface{
 
 	err := s.dict.Update(w)
 	if err == nil {
-		return http.StatusOK, nil
+		return http.StatusOK, suc
 	}
 
 	s.logger.Printf("[ERROR] update word error:%s\n", err)

@@ -18,11 +18,13 @@ export default class DictModel {
   update(w) {
     console.log('dict update')
     console.log(w)
+    return srv.update(w)
   }
 
-  delete(w) {
+  delete(id) {
     console.log('dict delete')
-    console.log(w)
+    console.log(""+id)
+    return srv.remove(id)
   }
 
   words(params) {

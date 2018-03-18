@@ -6,7 +6,7 @@ export function add(w) {
 }
 
 export function remove(id) {
-  return request.delete0('/v1/delete/' + id)
+  return request.delete0('/v1/dict', id)
 }
 
 export function update(w) {

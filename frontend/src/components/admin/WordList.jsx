@@ -29,7 +29,7 @@ class WordList extends React.Component {
         <span className='ant-divider' />
         <a href='#' onClick={() => this.edit(record)}>编辑</a>
         <span className='ant-divider' />
-        <Popconfirm title="确定要删除吗？" onConfirm={() => this.delete(record)}>
+        <Popconfirm title="确定要删除吗？" onConfirm={() => this.delete(record.id)}>
           <a>删除</a>
         </Popconfirm>
       </span>
@@ -37,15 +37,13 @@ class WordList extends React.Component {
   }]
 
   @observable model = 'edit'
-
   @observable visible = false
-
   @observable word = null
 
   render() {
     return (
     <div style={{ padding: '20px 240px', backgroud: 'white' }}>
-      <Search dict={this.props.dict} updateCond={c => this.updateCond(c)}/>
+      <Search dict={this.props.dict} updateCond={c => this.updateCond(c)} onSave={()=>this.fetchWords()}/>
       <div style={{ background: 'white' }}>
         <WordDetail
           model={this.model}
@@ -106,8 +104,10 @@ class WordList extends React.Component {
     this.visible = true
   }
 
-  delete(r) {
-    this.props.dict.delete(r)
+  delete(id) {
+    this.props.dict.delete(id).then(action("deleteSuc", () =>{
+      this.fetchWords()
+    }))
   }
 
   cancel() {
@@ -115,12 +115,15 @@ class WordList extends React.Component {
   }
 
   update(w) {
-    this.props.dict.update(w)
+    this.props.dict.update(w).then(action("updateSuc", ()=>{
+      this.fetchWords()
+    }))
     this.visible = false
   }
 
   constructor(props) {
     super(props)
+    this.cond.limit = 10
     this.fetchWords()
   }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { observable } from 'mobx'
+import { observable, action  } from 'mobx'
 import { observer } from 'mobx-react'
 import { Form, Row, Col, Input, Button, Icon } from 'antd';
 const FormItem = Form.Item;
@@ -79,7 +79,7 @@ class Search extends React.Component {
   }
 
   add(w) {
-    this.props.dict.add(w)
+    this.props.dict.add(w).then(action("addSuc", () => this.props.onSave && this.props.onSave()))
     this.state.isAddWord = false
   }
 
