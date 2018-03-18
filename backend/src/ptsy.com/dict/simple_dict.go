@@ -7,6 +7,8 @@ import (
 	"os"
 	"strings"
 	"sync"
+	"sync/atomic"
+	"time"
 )
 
 // Word the item in the dict
@@ -27,6 +29,10 @@ type SimpleDict struct {
 	words    []Word
 	filename string
 	logger   *log.Logger
+
+	wg       sync.WaitGroup
+	state    int32
+	exitChan chan struct{}
 }
 
 // Add add one word
@@ -39,6 +45,7 @@ func (d *SimpleDict) Add(word *Word) error {
 	word.ID = id
 	d.words = append(d.words, *word)
 	d.Unlock()
+	d.markModified()
 
 	return nil
 }
@@ -54,6 +61,9 @@ func (d *SimpleDict) Update(word *Word) (err error) {
 	d.words[i] = *word
 END:
 	d.Unlock()
+	if exist {
+		d.markModified()
+	}
 	return
 }
 
@@ -88,6 +98,9 @@ func (d *SimpleDict) Delete(id int32) (err error) {
 
 END:
 	d.Unlock()
+	if exist {
+		d.markModified()
+	}
 	return
 }
 
@@ -127,20 +140,33 @@ func (d *SimpleDict) Start() error {
 		return err
 	}
 
-	return json.Unmarshal(data, &d.words)
+	err = json.Unmarshal(data, &d.words)
+	if err != nil {
+		return err
+	}
+
+	go func() {
+		ticker := time.NewTicker(time.Minute)
+		d.wg.Add(1)
+		for {
+			select {
+			case <-d.exitChan:
+				ticker.Stop()
+				d.dump()
+				d.wg.Done()
+				return
+			case <-ticker.C:
+				d.dump()
+			}
+		}
+	}()
+	return nil
 }
 
 // Shutdown shutdown the dict
 func (d *SimpleDict) Shutdown() {
-	data, err := json.Marshal(d.words)
-	if err != nil {
-		d.logger.Printf("[ERROR] marshal data error:%s", err)
-		return
-	}
-
-	if err = ioutil.WriteFile(d.filename, data, os.ModePerm); err != nil {
-		d.logger.Printf("[ERROR] write file %s error:%s", d.filename, err)
-	}
+	close(d.exitChan)
+	d.wg.Wait()
 }
 
 func (d *SimpleDict) findIndex(id int32) (i int32, exist bool) {
@@ -161,7 +187,33 @@ func (d *SimpleDict) findIndex(id int32) (i int32, exist bool) {
 	return
 }
 
+func (d *SimpleDict) markModified() {
+	atomic.AddInt32(&d.state, 1)
+}
+
+func (d *SimpleDict) dump() {
+	state := atomic.LoadInt32(&d.state)
+	if state <= 0 {
+		return
+	}
+
+	data, err := json.Marshal(d.words)
+	if err != nil {
+		d.logger.Printf("[ERROR] marshal data error:%s", err)
+		return
+	}
+
+	err = ioutil.WriteFile(d.filename, data, os.ModePerm)
+	d.logger.Printf("[INFO] write file %s error:%v", d.filename, err)
+
+	atomic.AddInt32(&d.state, -state)
+}
+
 // NewSimpleDict creates dict using simplest style
 func NewSimpleDict() *SimpleDict {
-	return &SimpleDict{filename: "dict.json"}
+	return &SimpleDict{
+		filename: "dict.json",
+		exitChan: make(chan struct{}),
+		logger:   log.New(os.Stderr, "[Simple Dict] ", log.LstdFlags),
+	}
 }
