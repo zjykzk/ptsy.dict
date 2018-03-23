@@ -145,4 +145,5 @@ func registerDictRouter(s *Server) {
 		newParseFromQuery(func() interface{} { return &searchRequest{} }),
 		s.search,
 	)
+	s.Router.ServeFiles("/static/*filepath", http.Dir("./static"))
 }

@@ -159,7 +159,19 @@ func NewHTTPServer(conf *config.HTTP) (*Server, error) {
 		Router: httprouter.New(),
 	}
 
+	s.registerDefaultRouter()
 	registerDictRouter(s)
 
 	return s, nil
+}
+
+func (s *Server) registerDefaultRouter() {
+	s.Router.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		d, err := ioutil.ReadFile("index.html")
+		if err != nil {
+			w.Write([]byte("AWHO"))
+			return
+		}
+		w.Write(d)
+	})
 }
