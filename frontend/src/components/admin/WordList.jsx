@@ -1,7 +1,7 @@
 import React from 'react'
 import { observer } from 'mobx-react'
 import { observable, action } from 'mobx'
-import { Table,Popconfirm } from 'antd'
+import { Table, Popconfirm, Row, Col } from 'antd'
 
 import WordDetail from './WordDetail'
 import Search from './Search'
@@ -42,24 +42,26 @@ class WordList extends React.Component {
 
   render() {
     return (
-    <div style={{ padding: '20px 240px', backgroud: 'white' }}>
-      <Search dict={this.props.dict} updateCond={c => this.updateCond(c)} onSave={()=>this.fetchWords()}/>
-      <div style={{ background: 'white' }}>
-        <WordDetail
-          model={this.model}
-          dict={this.props.dict}
-          word={this.word}
-          visible={this.visible}
-          cancel={() => this.cancel()}
-          save={(w) => this.update(w)}/>
-        <Table
-          columns={this.columns}
-          dataSource={this.words}
-          rowKey={(r)=>r.id}
-          onChange={(p) => this.onChange(p)}
-          pagination={{total:this.total}}/>
-      </div>
-    </div>
+      <Row type="flex" justify="center" style={{background:"white"}}>
+        <Col span={16}>
+          <Search dict={this.props.dict} updateCond={c => this.updateCond(c)} onSave={()=>this.fetchWords()}/>
+        </Col>
+        <Col span={16}>
+          <WordDetail
+            model={this.model}
+            dict={this.props.dict}
+            word={this.word}
+            visible={this.visible}
+            cancel={() => this.cancel()}
+            save={(w) => this.update(w)}/>
+          <Table
+            columns={this.columns}
+            dataSource={this.words}
+            rowKey={(r)=>r.id}
+            onChange={(p) => this.onChange(p)}
+            pagination={{total:this.total}}/>
+        </Col>
+    </Row>
     )
   }
 

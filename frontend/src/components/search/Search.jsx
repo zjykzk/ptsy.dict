@@ -1,7 +1,7 @@
 import React from 'react'
 import { observable, action } from "mobx";
 import { observer } from 'mobx-react'
-import { Input } from 'antd'
+import { Input, Row, Col } from 'antd'
 
 import WordList from './WordList'
 
@@ -9,14 +9,14 @@ import WordList from './WordList'
 class Search extends React.Component {
   render() {
   return (
-    <div style={{ background: 'white' }}>
-      <div style={{ padding: '20px 240px', backgroud: 'white' }}>
-        <Input.Search onSearch={v => this.handleSearch(v)} />
-      </div>
-      <div style={{padding: '0 240px'}}>
-        <WordList words={this.words} keyword={this.keyword}/>
-      </div>
-    </div>
+      <Row type="flex" justify="center" style={{background:"white"}}>
+        <Col span={16}>
+          <Input.Search onSearch={v => this.handleSearch(v)} />
+        </Col>
+        <Col span={16}>
+          <WordList words={this.words} keyword={this.keyword}/>
+        </Col>
+      </Row>
     )
   }
 
