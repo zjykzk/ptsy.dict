@@ -1,6 +1,7 @@
 package http
 
 import (
+	"io/ioutil"
 	"net/http"
 	"strconv"
 
@@ -129,6 +130,32 @@ func (s *Server) search(_ httprouter.Params, o interface{}) (int, interface{}) {
 	return http.StatusOK, map[string]interface{}{"words": ws}
 }
 
+func (s *Server) static(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+	filepath := p.ByName("filepath")
+	switch filepath {
+	case "bundle.js":
+		staticBundle(w)
+	default:
+		writeFile(w, "./static/"+filepath)
+	}
+}
+
+func staticBundle(w http.ResponseWriter) {
+	h := w.Header()
+	h.Add("content-encoding", "gzip")
+	h.Add("content-type", "application/javascript")
+	writeFile(w, "./static/bundle.js.gz")
+}
+
+func writeFile(w http.ResponseWriter, filepath string) {
+	data, err := ioutil.ReadFile(filepath)
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+	w.Write(data)
+}
+
 const (
 	dictPrefix = "/dict"
 )
@@ -145,5 +172,5 @@ func registerDictRouter(s *Server) {
 		newParseFromQuery(func() interface{} { return &searchRequest{} }),
 		s.search,
 	)
-	s.Router.ServeFiles("/static/*filepath", http.Dir("./static"))
+	s.Router.GET("/static/:filepath", httprouter.Handle(s.static))
 }
