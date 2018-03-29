@@ -3,6 +3,7 @@ var webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const autoprefixer = require('autoprefixer')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
   devtool: 'eval-source-map',
@@ -22,7 +23,8 @@ module.exports = {
       chunks: ['main']
     }),
     new ExtractTextPlugin('styles.css'),
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new UglifyJsPlugin()
   ],
   resolve: {
     extensions: ['.js', '.jsx']
