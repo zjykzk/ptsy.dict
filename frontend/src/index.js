@@ -10,7 +10,7 @@ import DictModel from './models/DictModel'
 
 render(
   (<div>
-    <DevTools />
+    <DevTools /> //  DELETE ME UNDER PRODUCTION ENV
     <Router>
       <App dict={new DictModel()} />
     </Router>
