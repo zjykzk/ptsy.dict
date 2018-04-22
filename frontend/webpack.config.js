@@ -6,7 +6,7 @@ const autoprefixer = require('autoprefixer')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
-  devtool: 'eval-source-map',
+  devtool: 'eval-source-map', // DELETE ME WHEN FOR THE PRODUCTION!
   entry: [
     './src/index'
   ],

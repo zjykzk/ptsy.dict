@@ -9,10 +9,10 @@ import WordList from './WordList'
 class Search extends React.Component {
   render() {
   return (
-    <div style={{padding:"10 0 0 0", background:"white"}}>
+    <div style={{padding:"10 0 0 0", background:"white",height:40}}>
       <Row type="flex" justify="center">
         <Col span={16}>
-          <Input.Search onSearch={v => this.handleSearch(v)} />
+          <Input.Search onSearch={v => this.handleSearch(v)} enterButton="搜索" size="large"/>
         </Col>
         <Col span={16}>
           <WordList words={this.words} keyword={this.keyword}/>
